@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+:root {
+    --primary: #FFFFFF;
+    --primary-hover: #F5F7FF;
+    --secondary: #1677FF;
+    --secondary-hover: #1677ff2d;
+
+    --shadow-right: 4px 0 6px rgba(0, 0, 0, 0.1);
+    --shadow-bottom: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+    --primary: #202632;
+    --primary-hover: #29313F;
+    --secondary: #1677FF;
+    --secondary-hover: #1677ff2d;
+
+    --shadow-right: 4px 0 6px rgba(0, 0, 0, 0.1);
+    --shadow-bottom: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

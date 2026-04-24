@@ -1,62 +1,62 @@
 import { useState, type FC, type JSX } from "react";
-import { Form, Input, Select, Button, Checkbox, message } from 'antd'
-import { FiCreditCard, FiHome, FiUser, FiLock, FiLogIn } from 'react-icons/fi'
+import { FiCreditCard, FiHome, FiUser, FiLock, FiLogIn } from 'react-icons/fi';
 
 const branches = [
     { value: 'main', label: 'Asosiy filial — Zarifa opa' },
     { value: 'chilonzor', label: "Go'zal opa" },
-    { value: 'yunusobod', label: 'Saoday opa' },
+    { value: 'yunusobod', label: 'Saodat opa' },
     { value: 'mirzo', label: 'Shohruz' },
-]
+];
 
 export const Login: FC = (): JSX.Element => {
     const [loading, setLoading] = useState(false);
-    const [form] = Form.useForm()
-
-    const handleSubmit = async (values: Record<string, unknown>) => {
-        setLoading(true)
+    
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setLoading(true);
         try {
-            // TODO: replace with real API call
-            await new Promise((res) => setTimeout(res, 1500))
-            message.success('Tizimga muvaffaqiyatli kirdingiz!')
-            console.log('Login values:', values)
+            await new Promise((res) => setTimeout(res, 1500));
+            alert('Tizimga muvaffaqiyatli kirdingiz!'); // In production, replace with real toast/navigate
             // navigate('/dashboard')
         } catch {
-            message.error('Login yoki parol noto\'g\'ri!')
+            alert('Login yoki parol noto\'g\'ri!');
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     }
 
     return (
-        <div className="min-h-screen bg-[#F5F7FA] sm:flex sm:items-center sm:justify-center p-0 sm:p-4">
-            <div className="w-full max-w-[880px] rounded-none sm:rounded-2xl overflow-hidden shadow-lg flex flex-col sm:flex-row sm:h-auto sm:min-h-[520px]">
+        <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50/50">
+            <div className="w-full max-w-[960px] bg-white rounded-[2rem] overflow-hidden shadow-2xl shadow-blue-900/5 flex flex-col sm:flex-row min-h-[600px] animate-fade-in border border-gray-100/50">
 
                 {/* ── Left: Branding ── */}
-                <div className="flex w-full sm:w-[46%] bg-[#1677FF] flex-col items-center py-8 px-6 justify-center relative overflow-hidden">
-
-                    {/* Decorative circles */}
-                    <div className="absolute -top-14 -right-14 w-64 h-64 rounded-full border border-white/10" />
-                    <div className="absolute -bottom-20 -left-12 w-72 h-72 rounded-full border border-white/[0.07]" />
+                <div className="hidden sm:flex w-[45%] bg-gradient-to-br from-(--secondary) to-indigo-800 flex-col items-center py-12 px-8 justify-center relative overflow-hidden">
+                    
+                    {/* Decorative Background Elements */}
+                    <div className="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+                    <div className="absolute bottom-0 left-0 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4"></div>
+                    
+                    <div className="absolute top-12 left-12 w-24 h-24 border border-white/10 rounded-full"></div>
+                    <div className="absolute bottom-24 right-12 w-40 h-40 border border-white/5 rounded-full"></div>
 
                     {/* Logo */}
-                    <div className="p-[12px_11px] bg-white/20 rounded-xl flex items-center justify-center mb-6 z-10">
-                        <FiCreditCard size={30} color="#ffffff" />
+                    <div className="p-4 bg-white/10 backdrop-blur-md text-white rounded-2xl flex items-center justify-center mb-8 z-10 shadow-lg ring-1 ring-white/20">
+                        <FiCreditCard size={40} strokeWidth={1.5} />
                     </div>
 
-                    <h1 className="text-white text-2xl font-semibold text-center leading-snug mb-3 z-10">
+                    <h1 className="text-white text-[32px] font-black text-center leading-[1.1] mb-5 z-10 tracking-tight">
                         Nasiya Savdo<br />Boshqaruv Tizimi
                     </h1>
 
-                    <p className="text-white/70 text-sm text-center leading-relaxed z-10">
-                        Mijozlar, nasiyalar va to'lovlarni<br />oson va tez boshqaring
+                    <p className="text-blue-100/80 text-[15px] text-center leading-relaxed z-10 font-medium max-w-[260px]">
+                        Mijozlar, nasiyalar va to'lovlarni oson hamda tezkor boshqaring.
                     </p>
 
-                    <div className="flex gap-2 mt-8 z-10">
+                    <div className="flex flex-wrap justify-center gap-2 mt-12 z-10">
                         {['Mijozlar', 'Nasiya', 'Hisobot'].map((tag) => (
                             <span
                                 key={tag}
-                                className="bg-white/15 text-white/90 text-xs font-medium px-3 py-1.5 rounded-full"
+                                className="bg-white/10 backdrop-blur-md border border-white/10 text-white shadow-sm text-xs font-bold px-4 py-2 rounded-full tracking-wide uppercase"
                             >
                                 {tag}
                             </span>
@@ -65,100 +65,98 @@ export const Login: FC = (): JSX.Element => {
                 </div>
 
                 {/* ── Right: Form ── */}
-                <div className="flex-1 bg-white flex flex-col justify-center px-8 py-0 sm:py-12 sm:px-12">
+                <div className="flex-1 flex flex-col justify-center px-6 py-10 sm:px-16 relative">
+                    <div className="max-w-[400px] w-full mx-auto">
+                        
+                        {/* Mobile Logo */}
+                        <div className="sm:hidden w-14 h-14 bg-blue-50 text-(--secondary) rounded-2xl flex items-center justify-center mb-8 shadow-sm border border-blue-100">
+                            <FiCreditCard size={28} />
+                        </div>
 
-                    <div className="mb-6">
-                        <h2 className="text-xl font-semibold text-gray-800">Tizimga kirish</h2>
-                        <p className="text-sm text-gray-400 mt-1">Hisobingizga kiring davom etish uchun</p>
-                    </div>
+                        <div className="mb-10">
+                            <h2 className="text-[28px] font-black text-gray-800 tracking-tight">Xush kelibsiz!</h2>
+                            <p className="text-[15px] text-gray-500 mt-2 font-medium">Hisobingizga kirish uchun ma'lumotlarni to'ldiring</p>
+                        </div>
 
-                    <Form
-                        form={form}
-                        layout="vertical"
-                        onFinish={handleSubmit}
-                        requiredMark={false}
-                        initialValues={{ remember: true, branch: 'main' }}
-                    >
+                        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
 
-                        {/* Branch */}
-                        <Form.Item
-                            name="branch"
-                            label={<span className="text-xs font-medium text-gray-500">Filial tanlang</span>}
-                            rules={[{ required: true, message: 'Filialni tanlang' }]}
-                        >
-                            <Select
-                                size="large"
-                                suffixIcon={<FiHome size={14} color="#aaa" />}
-                                options={branches}
-                                className="w-full"
-                            />
-                        </Form.Item>
+                            {/* Branch */}
+                            <div className="flex flex-col gap-2.5">
+                                <label className="text-[13px] font-bold text-gray-700 uppercase tracking-wide">Filial</label>
+                                <div className="relative">
+                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                                        <FiHome size={18} />
+                                    </div>
+                                    <select required defaultValue="" className="bg-gray-50 border border-gray-200 text-gray-800 text-[15px] rounded-xl focus:ring-4 focus:ring-blue-100/50 focus:border-blue-400 focus:bg-white block w-full pl-11 p-4 transition-all outline-none font-semibold appearance-none cursor-pointer">
+                                        <option value="" disabled hidden>Filialni tanlang...</option>
+                                        {branches.map(b => <option key={b.value} value={b.value}>{b.label}</option>)}
+                                    </select>
+                                    <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-gray-400">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
 
-                        {/* Username */}
-                        <Form.Item
-                            name="username"
-                            label={<span className="text-xs font-medium text-gray-500">Login</span>}
-                            rules={[{ required: true, message: 'Login kiriting' }]}
-                        >
-                            <Input
-                                size="large"
-                                prefix={<FiUser size={15} color="#aaa" className="mr-1" />}
-                                placeholder="Login kiriting"
-                                autoComplete="username"
-                            />
-                        </Form.Item>
+                            {/* Username */}
+                            <div className="flex flex-col gap-2.5">
+                                <label className="text-[13px] font-bold text-gray-700 uppercase tracking-wide">Login</label>
+                                <div className="relative">
+                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                                        <FiUser size={18} />
+                                    </div>
+                                    <input required type="text" placeholder="Login kiriting" className="bg-gray-50 border border-gray-200 text-gray-800 text-[15px] rounded-xl focus:ring-4 focus:ring-blue-100/50 focus:border-blue-400 focus:bg-white block w-full pl-11 p-4 transition-all outline-none font-semibold placeholder-gray-400" />
+                                </div>
+                            </div>
 
-                        {/* Password */}
-                        <Form.Item
-                            name="password"
-                            className="[&_.ant-form-item-label>label]:w-full"
-                            label={
-                                <div className="w-full flex items-center justify-between">
-                                    <span className="text-xs font-medium text-gray-500">Parol</span>
-                                    <a href="#" className="text-xs text-[#1677FF] hover:underline">
+                            {/* Password */}
+                            <div className="flex flex-col gap-2.5">
+                                <div className="flex items-center justify-between">
+                                    <label className="text-[13px] font-bold text-gray-700 uppercase tracking-wide">Parol</label>
+                                    <a href="#" className="text-[13px] font-bold text-(--secondary) hover:text-blue-500 transition-colors">
                                         Parolni unutdingizmi?
                                     </a>
                                 </div>
-                            }
-                            rules={[{ required: true, message: 'Parol kiriting' }]}
-                        >
-                            <Input.Password
-                                size="large"
-                                prefix={<FiLock size={15} color="#aaa" className="mr-1" />}
-                                placeholder="Parol kiriting"
-                                autoComplete="current-password"
-                            />
-                        </Form.Item>
+                                <div className="relative">
+                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                                        <FiLock size={18} />
+                                    </div>
+                                    <input required type="password" placeholder="Parol kiriting" className="bg-gray-50 border border-gray-200 text-gray-800 text-[15px] rounded-xl focus:ring-4 focus:ring-blue-100/50 focus:border-blue-400 focus:bg-white block w-full pl-11 p-4 transition-all outline-none font-semibold placeholder-gray-400" />
+                                </div>
+                            </div>
 
-                        {/* Remember me */}
-                        <Form.Item name="remember" valuePropName="checked" className="mb-6">
-                            <Checkbox>
-                                <span className="text-sm text-gray-500">Tizimda qolish</span>
-                            </Checkbox>
-                        </Form.Item>
+                            {/* Remember me */}
+                            <div className="flex items-center gap-3 mt-1">
+                                <div className="relative flex items-center justify-center">
+                                    <input type="checkbox" id="remember" className="peer w-[22px] h-[22px] cursor-pointer appearance-none rounded-lg border-2 border-gray-300 checked:bg-(--secondary) checked:border-(--secondary) transition-all" defaultChecked />
+                                    <svg className="absolute w-3.5 h-3.5 pointer-events-none text-white opacity-0 peer-checked:opacity-100 transition-opacity" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1 5L4.5 8.5L13 1" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                </div>
+                                <label htmlFor="remember" className="text-[15px] font-semibold text-gray-600 cursor-pointer select-none">
+                                    Tizimda qolish
+                                </label>
+                            </div>
 
-                        {/* Submit */}
-                        <Form.Item className="mb-0">
-                            <Button
-                                type="primary"
-                                htmlType="submit"
-                                size="large"
-                                loading={loading}
-                                icon={!loading && <FiLogIn size={16} />}
-                                className="w-full h-11 font-semibold text-sm"
-                            >
-                                {loading ? 'Yuklanmoqda...' : 'Kirish'}
-                            </Button>
-                        </Form.Item>
+                            {/* Submit */}
+                            <button disabled={loading} type="submit" className="mt-4 bg-(--secondary) hover:bg-blue-600 text-white font-bold py-4 px-6 rounded-xl shadow-lg shadow-blue-500/25 transition-all hover:shadow-xl hover:-translate-y-1 flex items-center justify-center gap-3 text-[16px] disabled:opacity-70 disabled:hover:translate-y-0 disabled:cursor-not-allowed disabled:shadow-none group">
+                                {loading ? (
+                                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                ) : (
+                                    <FiLogIn size={20} className="group-hover:translate-x-1 transition-transform" />
+                                )}
+                                {loading ? 'Tizimga kirilmoqda...' : 'Tizimga kirish'}
+                            </button>
 
-                    </Form>
+                        </form>
 
-                    <p className="text-center text-xs text-gray-500 mt-4">
-                        v1.0.0 &nbsp;·&nbsp; Nasiya Savdo Boshqaruv Tizimi
-                    </p>
-
+                        <div className="mt-12 text-center border-t border-gray-100 pt-6">
+                            <p className="text-[13px] font-bold text-gray-400 uppercase tracking-widest">
+                                Nasiya Savdo Boshqaruv Tizimi <span className="text-gray-300">·</span> v1.0.0
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     )
-} 
+}
