@@ -42,3 +42,28 @@ export interface ICustomer {
     status: string;
     color: string;
 }
+
+export interface IChartData {
+    id: number;
+    month: string;
+    value: string;
+    percent: number;
+    barClass: string;
+}
+
+export interface IPaymentHistory {
+    id: number;
+    name: string;
+    date: string;
+    method: string;
+    amount: string;
+    color: string;
+}
+
+export interface IDebtorsData {
+    id: number;
+    name: string;
+    amount: string;
+    colorClass: string;
+    bgClass: string;
+}

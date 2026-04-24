@@ -1,6 +1,7 @@
 import { type FC, type JSX } from "react";
+import type { IChartData } from "../interfaces";
 
-const chartData = [
+const chartData: IChartData[] = [
     { id: 1, month: "Yan", value: "3 600 000", percent: 60, barClass: "bg-(--secondary) group-hover:bg-blue-400" },
     { id: 2, month: "Feb", value: "4 500 000", percent: 75, barClass: "bg-(--secondary) group-hover:bg-blue-400" },
     { id: 3, month: "Mar", value: "3 300 000", percent: 55, barClass: "bg-(--secondary) group-hover:bg-blue-400" },
@@ -10,13 +11,13 @@ const chartData = [
 export const ReportsChartArea: FC = (): JSX.Element => (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
         <h3 className="font-bold text-gray-800 text-lg mb-8 pb-4 border-b border-gray-100">Oylik to'lov dinamikasi</h3>
-        
+
         <div className="flex flex-col gap-7 mt-4">
-            {chartData.map(item => (
+            {chartData.map((item: IChartData) => (
                 <div key={item.id} className="flex items-center gap-4 group">
                     <span className="w-10 text-gray-500 font-bold text-sm uppercase tracking-wide">{item.month}</span>
                     <div className="flex-1 h-4 bg-gray-50 rounded-full overflow-hidden shadow-inner border border-gray-100">
-                        <div 
+                        <div
                             className={`h-full rounded-full transition-all duration-1000 ease-out ${item.barClass} relative overflow-hidden`}
                             style={{ width: `${item.percent}%` }}
                         >

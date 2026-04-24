@@ -8,7 +8,7 @@ export function AppLayout() {
             {/* You can add a header, sidebar, or navigation here in the future */}
             <Header />
             <SideBar />
-            <main className="row-start-2 row-end-3 col-start-2 col-end-3 bg-gray-50 p-3 overflow-auto">
+            <main className="row-start-2 row-end-3 col-start-2 col-end-3 bg-gray-50 p-3 overflow-auto pb-24 md:pb-3">
                 <Outlet />
             </main>
         </div>
