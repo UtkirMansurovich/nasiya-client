@@ -114,7 +114,7 @@ export const SideBar: FC = (): JSX.Element => {
 
                 {/* FAB (Floating Action Button) */}
                 <div className="relative -top-6">
-                    <Link to="/payments" className="flex items-center justify-center w-[54px] h-[54px] bg-(--secondary) text-white rounded-full shadow-lg shadow-blue-500/40 border-[4px] border-gray-50 hover:scale-105 transition-transform">
+                    <Link to="/payments" className="flex items-center justify-center w-[54px] h-[54px] bg-(--secondary) text-white rounded-full shadow-lg shadow-blue-500/40 border-4 border-gray-50 hover:scale-105 transition-transform">
                         <PlusOutlined className="text-[22px] font-bold" />
                     </Link>
                 </div>
