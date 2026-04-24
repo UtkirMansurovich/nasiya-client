@@ -20,7 +20,7 @@ export const ReportsChartArea: FC = (): JSX.Element => (
                             className={`h-full rounded-full transition-all duration-1000 ease-out ${item.barClass} relative overflow-hidden`}
                             style={{ width: `${item.percent}%` }}
                         >
-                            <div className="absolute inset-0 bg-white/20 w-full h-full -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+                            <div className="absolute inset-0 bg-white/20 w-full h-full -skew-x-12 -translate-x-full group-hover:translate-x-[200%] transition-transform duration-1000"></div>
                         </div>
                     </div>
                     <span className="w-28 text-right font-black text-gray-700 text-[15px] tracking-tight">{item.value}</span>

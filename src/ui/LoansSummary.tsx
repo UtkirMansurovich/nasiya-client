@@ -3,7 +3,7 @@ import { CalculatorOutlined, SaveOutlined } from "@ant-design/icons";
 
 export const LoansSummary: FC = (): JSX.Element => (
     <div className="flex flex-col gap-6">
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50/50 rounded-xl shadow-sm border border-blue-100 p-6 sticky top-24">
+        <div className="bg-linear-to-br from-blue-50 to-indigo-50/50 rounded-xl shadow-sm border border-blue-100 p-6 sticky top-24">
             <div className="flex items-center gap-3 mb-6 pb-4 border-b border-blue-200/60">
                 <div className="w-9 h-9 rounded-lg bg-(--secondary) text-white flex items-center justify-center shadow-md shadow-blue-500/30">
                     <CalculatorOutlined className="text-lg" />

@@ -27,10 +27,10 @@ export const Login: FC = (): JSX.Element => {
 
     return (
         <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50/50">
-            <div className="w-full max-w-[960px] bg-white rounded-[2rem] overflow-hidden shadow-2xl shadow-blue-900/5 flex flex-col sm:flex-row min-h-[600px] animate-fade-in border border-gray-100/50">
+            <div className="w-full max-w-[960px] bg-white rounded-4xl overflow-hidden shadow-2xl shadow-blue-900/5 flex flex-col sm:flex-row min-h-[600px] animate-fade-in border border-gray-100/50">
 
                 {/* ── Left: Branding ── */}
-                <div className="hidden sm:flex w-[45%] bg-gradient-to-br from-(--secondary) to-indigo-800 flex-col items-center py-12 px-8 justify-center relative overflow-hidden">
+                <div className="hidden sm:flex w-[45%] bg-linear-to-br from-(--secondary) to-indigo-800 flex-col items-center py-12 px-8 justify-center relative overflow-hidden">
                     
                     {/* Decorative Background Elements */}
                     <div className="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>

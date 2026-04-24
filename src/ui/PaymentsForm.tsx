@@ -4,7 +4,7 @@ import { CreditCardOutlined, SaveOutlined, UserOutlined, ShoppingCartOutlined, W
 export const PaymentsForm: FC = (): JSX.Element => (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8 relative overflow-hidden">
         {/* Decorative background element */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-full -z-0 opacity-70"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-full z-0 opacity-70"></div>
         
         <div className="flex items-center gap-3 mb-8 pb-4 border-b border-gray-100 relative z-10">
             <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100 shadow-sm">

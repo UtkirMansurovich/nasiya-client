@@ -37,7 +37,7 @@ export const LoansProductInfo: FC = (): JSX.Element => (
                 </div>
                 <div className="flex flex-col gap-2">
                     <label className="text-sm font-semibold text-gray-700">Boshlash sanasi</label>
-                    <input type="date" defaultValue="2026-04-23" className="bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-lg focus:ring-4 focus:ring-blue-100/50 focus:border-blue-400 focus:bg-white block w-full p-3 transition-all outline-none font-medium text-gray-600" />
+                    <input type="date" defaultValue="2026-04-23" className="bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-lg focus:ring-4 focus:ring-blue-100/50 focus:border-blue-400 focus:bg-white block w-full p-3 transition-all outline-none font-medium" />
                 </div>
             </div>
 
