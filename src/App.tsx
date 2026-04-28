@@ -10,6 +10,7 @@ import { Loans } from './pages/Loans'
 import { Reports } from './pages/Reports'
 import { Payments } from './pages/Payments'
 import { ProtectedRoute } from './components/ProtectedRoute'
+import { CustomerDetail } from './pages/CustomerDetail'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route index element={<Navigate replace to="dashboard" />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="customers" element={<Customers />} />
+            <Route path="customers/:id" element={<CustomerDetail />} />
             <Route path="loans" element={<Loans />} />
             <Route path="payments" element={<Payments />} />
             <Route path="reports" element={<Reports />} />

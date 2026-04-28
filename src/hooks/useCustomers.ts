@@ -1,11 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { customersService } from "../services/customers.service";
+import type { IUpdateCustomer } from "../interfaces";
 
 // Barcha mijozlar
-export const useCustomers = () => {
+export const useCustomers = (page: number = 1, limit: number = 10) => {
   return useQuery({
-    queryKey: ["customers"],
-    queryFn: customersService.getAll,
+    queryKey: ["customers", page, limit],
+    queryFn: () => customersService.getAll(page, limit),
   });
 };
 
@@ -29,10 +30,10 @@ export const useCreateCustomer = () => {
 };
 
 // Mijozni tahrirlash
-export const useUpdateCustomer = (id: number) => {
+export const useUpdateCustomer = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: any }) =>
+    mutationFn: ({ id, data }: { id: number; data: IUpdateCustomer }) =>
       customersService.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["customers"] });
@@ -41,11 +42,21 @@ export const useUpdateCustomer = (id: number) => {
 };
 
 // Mijozni o'chirish
-export const useDeleteCustomer = (id: number) => {
+export const useDeleteCustomer = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: customersService.remove,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
+    },
+  });
+};
+
+export const useUpsertCustomer = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: customersService.upsert,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["customers"] });
     },

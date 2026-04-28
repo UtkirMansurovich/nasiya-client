@@ -1,6 +1,6 @@
 import { BASE_URL } from "../configs/constants";
 
-export const api = async (endpoint: string, options: RequestInit) => {
+export const api = async (endpoint: string, options?: RequestInit) => {
   const token = localStorage.getItem("token");
 
   const res = await fetch(`${BASE_URL}${endpoint}`, {

@@ -34,22 +34,50 @@ export interface IDashboardExpired {
   currency: string;
 }
 
+// Customer interface
 export interface ICustomer {
   id: number;
   full_name: string;
   phone: string;
-  phone2: string;
-  address: string;
-  passport_series: string;
-  passport_number: string;
-  passport_issued_by: string | null;
-  passport_issued_date: string | null;
-  referred_by: string;
-  workplace: string | null;
-  guarantor_name: string | null;
-  guarantor_phone: string | null;
+  phone2?: string;
+  address?: string;
+  passport_series?: string;
+  passport_number?: string;
+  passport_issued_by?: string;
+  passport_issued_date?: string;
+  referred_by?: string;
+  workplace?: string;
+  guarantor_name?: string;
+  guarantor_phone?: string;
   created_at: string;
-  credits: string[];
+  credits?: ICredit[];
+  stats?: {
+    jami_qarz: number;
+    ustama_foiz: number;
+    jami_qarz_va_foyda: number;
+    foyda: number;
+    tolangan: number;
+    qolgan_qarz: number;
+    oxirgi_sana: string | null;
+    status: "active" | "completed" | "defaulted" | "none";
+  };
+}
+
+export type ICreateCustomer = Omit<ICustomer, "id" | "created_at">;
+export type IUpdateCustomer = Partial<ICreateCustomer>;
+
+export interface ICredit {
+  id: number;
+  status: "active" | "completed" | "defaulted";
+  total_debt: number;
+  paid_amount: number;
+  remaining_debt: number;
+  cost_price: number;
+  markup_percent: number;
+  daily_payment: number;
+  product_name: string;
+  notes?: string;
+  start_date: string;
 }
 
 export interface IChartData {

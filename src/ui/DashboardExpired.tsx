@@ -38,7 +38,7 @@ export const DashboardExpired: FC = (): JSX.Element => {
                             <div className="flex flex-col flex-1 min-w-0">
                                 <p className="font-bold text-gray-800 text-[13px] sm:text-[15px] truncate">{item?.fullName}</p>
                                 <div className="flex items-center text-[10px] sm:text-[13px] text-gray-500 mt-1">
-                                    <p className="bg-gray-100/80 px-1.5 sm:px-2 py-0.5 rounded-md text-gray-600 border border-gray-200/60 shadow-xs truncate max-w-[80px] sm:max-w-none">{item?.product}</p>
+                                    <p className="bg-gray-100/80 px-1.5 sm:px-2 py-0.5 rounded-md text-gray-600 border border-gray-200/60 shadow-xs truncate max-w-20 sm:max-w-none">{item?.product}</p>
                                 </div>
                             </div>
                         </div>

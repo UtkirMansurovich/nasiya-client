@@ -1,135 +1,237 @@
-import { type FC, type JSX } from "react";
-import { EyeOutlined, LoadingOutlined } from "@ant-design/icons";
-import { useCustomers } from "../hooks/useCustomers";
+import { type FC } from "react";
+import { Table, Tag, Tooltip } from "antd";
+import {
+  EyeOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
+import { Popconfirm } from "antd";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useCustomers, useDeleteCustomer } from "../hooks/useCustomers";
 import type { ICustomer } from "../interfaces";
 
-const getAvatarColor = (name: string) => {
-  const colors = [
-    "bg-emerald-100 text-emerald-600",
-    "bg-blue-100 text-blue-600",
-    "bg-rose-100 text-rose-600",
-    "bg-purple-100 text-purple-600",
+// --- Helpers ---
+const fmt = (n: number) =>
+  new Intl.NumberFormat("uz-UZ").format(Math.round(n));
+
+const StatusTag: FC<{ status: string }> = ({ status }) => {
+  const map: Record<string, { color: string; text: string }> = {
+    active: { color: "blue", text: "Aktiv" },
+    completed: { color: "green", text: "Tugagan" },
+    defaulted: { color: "red", text: "Muddati o'tgan" },
+    none: { color: "default", text: "Nasiya yo'q" },
+  };
+  const { color, text } = map[status] || map.none;
+  return <Tag color={color}>{text}</Tag>;
+};
+
+// --- Component ---
+export const CustomersTable: FC = () => {
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const currentPage = Number(searchParams.get("page")) || 1;
+  const pageSize = Number(searchParams.get("limit")) || 10;
+
+  const { data: response, isLoading } = useCustomers(currentPage, pageSize);
+  const customers = response?.data || [];
+  const total = response?.total || 0;
+
+  const { mutate: deleteCustomer } = useDeleteCustomer();
+
+  const columns = [
+    {
+      title: (
+        <div className="h-10 flex items-center pl-2">
+          F.I.O
+        </div>
+      ),
+      dataIndex: "full_name",
+      fixed: "left" as const,
+      width: 200,
+      render: (_: string, record: ICustomer) => {
+        const colors = [
+          "bg-emerald-100 text-emerald-600",
+          "bg-blue-100 text-blue-600",
+          "bg-rose-100 text-rose-600",
+          "bg-purple-100 text-purple-600",
+        ];
+        const color = colors[record.full_name.charCodeAt(0) % colors.length];
+        const initials = record.full_name
+          .split(" ")
+          .slice(0, 2)
+          .map((n) => n[0])
+          .join("");
+        return (
+          <div className="flex items-center gap-2">
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs shrink-0 ${color}`}
+            >
+              {initials}
+            </div>
+            <span className="font-semibold text-gray-800 text-sm">
+              {record.full_name}
+            </span>
+          </div>
+        );
+      },
+    },
+    {
+      title: "Telefon",
+      dataIndex: "phone",
+      width: 140,
+      render: (text: string) => (
+        <span className="text-gray-500 text-sm">{text || "—"}</span>
+      ),
+    },
+    {
+      title: "Jami qarz",
+      width: 140,
+      render: (_: unknown, record: ICustomer) => {
+        const val = record.stats?.jami_qarz;
+        return (
+          <span className="font-semibold text-gray-800">
+            {val ? `${fmt(val)} so'm` : "—"}
+          </span>
+        );
+      },
+    },
+    {
+      title: "Ustama %",
+      width: 100,
+      render: (_: unknown, record: ICustomer) => {
+        const val = record.stats?.ustama_foiz;
+        return val ? <Tag color="orange">{val.toFixed(0)}%</Tag> : "—";
+      },
+    },
+    {
+      title: "Jami + foyda",
+      width: 150,
+      render: (_: unknown, record: ICustomer) => {
+        const val = record.stats?.jami_qarz_va_foyda;
+        return (
+          <span className="text-indigo-600 font-semibold text-sm">
+            {val ? `${fmt(val)} so'm` : "—"}
+          </span>
+        );
+      },
+    },
+    {
+      title: "Foyda",
+      width: 130,
+      render: (_: unknown, record: ICustomer) => {
+        const val = record.stats?.foyda;
+        return (
+          <span className="text-emerald-600 font-semibold text-sm">
+            {val ? `+${fmt(val)} so'm` : "—"}
+          </span>
+        );
+      },
+    },
+    {
+      title: "To'langan",
+      width: 140,
+      render: (_: unknown, record: ICustomer) => {
+        const val = record.stats?.tolangan;
+        return (
+          <span className="text-blue-600 text-sm">
+            {val ? `${fmt(val)} so'm` : "—"}
+          </span>
+        );
+      },
+    },
+    {
+      title: "Qolgan qarz",
+      width: 140,
+      render: (_: unknown, record: ICustomer) => {
+        const val = record.stats?.qolgan_qarz;
+        return (
+          <span className={`font-semibold text-sm ${val && val > 0 ? "text-rose-500" : "text-gray-400"}`}>
+            {val ? `${fmt(val)} so'm` : "—"}
+          </span>
+        );
+      },
+    },
+    {
+      title: "Oxirgi to'lov",
+      width: 140,
+      render: (_: unknown, record: ICustomer) => {
+        const date = record.stats?.oxirgi_sana;
+        return (
+          <span className="text-gray-400 text-sm">
+            {date
+              ? new Date(date).toLocaleDateString("uz-UZ")
+              : "—"}
+          </span>
+        );
+      },
+    },
+    {
+      title: "Status",
+      width: 150,
+      render: (_: unknown, record: ICustomer) => (
+        <StatusTag status={record.stats?.status || "none"} />
+      ),
+    },
+    {
+      title: "Harakat",
+      fixed: "right" as const,
+      width: 100,
+      render: (_: unknown, record: ICustomer) => (
+        <div className="flex items-center gap-1">
+          <Tooltip title="Batafsil">
+            <button
+              onClick={() => navigate(`/customers/${record.id}`)}
+              className="p-1.5 rounded-lg hover:bg-blue-50 text-gray-400 hover:text-blue-500 transition-colors"
+            >
+              <EyeOutlined />
+            </button>
+          </Tooltip>
+          <Popconfirm
+            title="Mijozni o'chirish"
+            description="Rostdan ham o'chirmoqchimisiz?"
+            okText="Ha"
+            cancelText="Yo'q"
+            okButtonProps={{ danger: true }}
+            onConfirm={() => deleteCustomer(record.id)}
+          >
+            <Tooltip title="O'chirish">
+              <button className="p-1.5 rounded-lg hover:bg-rose-50 text-gray-400 hover:text-rose-500 transition-colors">
+                <DeleteOutlined />
+              </button>
+            </Tooltip>
+          </Popconfirm>
+        </div>
+      ),
+    },
   ];
-  return colors[name.charCodeAt(0) % colors.length];
-};
-
-const getStatusColor = (credits: string[]) => {
-  if (!credits || credits.length === 0)
-    return {
-      badge: "bg-gray-100 text-gray-600 border-gray-200",
-      label: "Yangi",
-    };
-  const hasActive = credits.some((c: any) => c.status === "active");
-  const hasDefaulted = credits.some((c: any) => c.status === "defaulted");
-  if (hasDefaulted)
-    return {
-      badge: "bg-rose-50 text-rose-700 border-rose-200",
-      label: "O'tgan",
-    };
-  if (hasActive)
-    return {
-      badge: "bg-emerald-50 text-emerald-700 border-emerald-200",
-      label: "Faol",
-    };
-  return { badge: "bg-gray-100 text-gray-600 border-gray-200", label: "Yopiq" };
-};
-
-export const CustomersTable: FC = (): JSX.Element => {
-  const { data: customers, isLoading, isError } = useCustomers();
-
-  if (isLoading)
-    return (
-      <div className="flex items-center justify-center py-20 text-blue-500">
-        <LoadingOutlined className="text-3xl" />
-      </div>
-    );
-
-  if (isError)
-    return (
-      <div className="flex items-center justify-center py-20 text-rose-500 font-semibold">
-        Mijozlarni yuklashda xatolik!
-      </div>
-    );
-
-  if (!customers?.length)
-    return (
-      <div className="flex items-center justify-center py-20 text-gray-400 font-semibold">
-        Hali mijozlar yo'q
-      </div>
-    );
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-left border-collapse min-w-[800px]">
-        <thead>
-          <tr className="bg-gray-50/80 border-b border-gray-100">
-            <th className="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">
-              Ism
-            </th>
-            <th className="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">
-              Telefon
-            </th>
-            <th className="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">
-              Manzil
-            </th>
-            <th className="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">
-              Status
-            </th>
-            <th className="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">
-              Harakat
-            </th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-100">
-          {customers.map((customer: ICustomer) => {
-            const status = getStatusColor(customer.credits);
-            const avatarColor = getAvatarColor(customer.full_name);
-            const initials = customer.full_name
-              ?.split(" ")
-              .slice(0, 2)
-              .map((n: string) => n[0])
-              .join("");
-
-            return (
-              <tr
-                key={customer.id}
-                className="hover:bg-blue-50/50 transition-colors group"
-              >
-                <td className="py-4 px-6">
-                  <div className="flex items-center gap-4">
-                    <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${avatarColor} group-hover:scale-105 transition-transform shadow-sm`}
-                    >
-                      {initials}
-                    </div>
-                    <span className="font-bold text-gray-800 text-[15px]">
-                      {customer.full_name}
-                    </span>
-                  </div>
-                </td>
-                <td className="py-4 px-6 text-gray-500 font-medium text-[14px]">
-                  {customer.phone}
-                </td>
-                <td className="py-4 px-6 text-gray-500 font-medium text-[14px]">
-                  {customer.address || "—"}
-                </td>
-                <td className="py-4 px-6 text-center">
-                  <span
-                    className={`inline-flex items-center justify-center px-3 py-1 rounded-md text-xs font-bold border ${status.badge}`}
-                  >
-                    {status.label}
-                  </span>
-                </td>
-                <td className="py-4 px-6 text-center">
-                  <button className="text-gray-400 hover:text-(--secondary) transition-colors p-2 rounded-lg hover:bg-white border border-transparent hover:border-blue-100 hover:shadow-sm">
-                    <EyeOutlined className="text-lg" />
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+    <Table
+      dataSource={customers}
+      columns={columns}
+      rowKey="id"
+      loading={isLoading}
+      pagination={{
+        current: currentPage,
+        pageSize: pageSize,
+        total: total,
+        showSizeChanger: true,
+        pageSizeOptions: ["10", "20", "50", "100"],
+        onChange: (page, size) => {
+          setSearchParams({ page: page.toString(), limit: size.toString() });
+        },
+        showTotal: (total) => `Jami: ${total} ta mijoz`,
+        style: {
+          paddingRight: 20,
+        },
+      }}
+      rowClassName="hover:bg-blue-50/30 cursor-pointer"
+      onRow={(record) => ({
+        onDoubleClick: () => navigate(`/customers/${record.id}`),
+      })}
+      sticky
+      scroll={{ x: 1400 }}
+      size="small"
+    />
   );
 };

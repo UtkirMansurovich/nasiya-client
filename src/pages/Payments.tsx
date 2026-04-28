@@ -4,21 +4,21 @@ import { PaymentsForm } from "../ui/PaymentsForm";
 import { PaymentsHistory } from "../ui/PaymentsHistory";
 
 export const Payments: FC = (): JSX.Element => {
-    return (
-        <div className="p-4 sm:p-6 lg:p-8 w-full max-w-[1400px] mx-auto animate-fade-in">
-            <PaymentsHeader />
+  return (
+    <div className="p-4 sm:p-6 lg:p-8 w-full max-w-350 mx-auto animate-fade-in">
+      <PaymentsHeader />
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Left: Payment Form */}
-                <div className="lg:col-span-2 flex flex-col gap-6">
-                    <PaymentsForm />
-                </div>
-
-                {/* Right: Payment History */}
-                <div className="flex flex-col gap-6">
-                    <PaymentsHistory />
-                </div>
-            </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Left: Payment Form */}
+        <div className="lg:col-span-2 flex flex-col gap-6">
+          <PaymentsForm />
         </div>
-    )
-}
+
+        {/* Right: Payment History */}
+        <div className="flex flex-col gap-6">
+          <PaymentsHistory />
+        </div>
+      </div>
+    </div>
+  );
+};
