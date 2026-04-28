@@ -23,7 +23,7 @@ export const Login: FC = (): JSX.Element => {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50/50">
-      <div className="w-full max-w-[960px] bg-white rounded-4xl overflow-hidden shadow-2xl shadow-blue-900/5 flex flex-col sm:flex-row min-h-[600px] animate-fade-in border border-gray-100/50">
+      <div className="w-full max-w-240 bg-white rounded-4xl overflow-hidden shadow-2xl shadow-blue-900/5 flex flex-col sm:flex-row min-h-150 animate-fade-in border border-gray-100/50">
         {/* ── Left: Branding ── */}
         <div className="hidden sm:flex w-[45%] bg-linear-to-br from-(--secondary) to-indigo-800 flex-col items-center py-12 px-8 justify-center relative overflow-hidden">
           <div className="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
@@ -41,7 +41,7 @@ export const Login: FC = (): JSX.Element => {
             Boshqaruv Tizimi
           </h1>
 
-          <p className="text-blue-100/80 text-[15px] text-center leading-relaxed z-10 font-medium max-w-[260px]">
+          <p className="text-blue-100/80 text-[15px] text-center leading-relaxed z-10 font-medium max-w-65">
             Mijozlar, nasiyalar va to'lovlarni oson hamda tezkor boshqaring.
           </p>
 
@@ -59,7 +59,7 @@ export const Login: FC = (): JSX.Element => {
 
         {/* ── Right: Form ── */}
         <div className="flex-1 flex flex-col justify-center px-6 py-10 sm:px-16 relative">
-          <div className="max-w-[400px] w-full mx-auto">
+          <div className="max-w-100 w-full mx-auto">
             <div className="sm:hidden w-14 h-14 bg-blue-50 text-(--secondary) rounded-2xl flex items-center justify-center mb-8 shadow-sm border border-blue-100">
               <FiCreditCard size={28} />
             </div>
@@ -149,7 +149,7 @@ export const Login: FC = (): JSX.Element => {
                   <input
                     type="checkbox"
                     id="remember"
-                    className="peer w-[22px] h-[22px] cursor-pointer appearance-none rounded-lg border-2 border-gray-300 checked:bg-(--secondary) checked:border-(--secondary) transition-all"
+                    className="peer w-5.5 h-5.5 cursor-pointer appearance-none rounded-lg border-2 border-gray-300 checked:bg-(--secondary) checked:border-(--secondary) transition-all"
                     defaultChecked
                   />
                   <svg
