@@ -213,7 +213,7 @@ export const ExcelImportModal: FC<Props> = ({ isOpen, onClose }) => {
       title: "Holat",
       dataIndex: "_status",
       width: 180,
-      render: (_: any, record: PreviewRow) => {
+      render: (_: string, record: PreviewRow) => {
         if (record._status === "new")
           return <Tag color="green">✅ Yangi qo'shiladi</Tag>;
         if (record._status === "update")

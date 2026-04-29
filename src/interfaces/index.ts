@@ -104,3 +104,37 @@ export interface IDebtorsData {
   colorClass: string;
   bgClass: string;
 }
+
+export interface IPartner {
+  id: number;
+  full_name: string;
+  phone: string;
+  balance: number;
+  total_invested: number;
+  total_profit: number;
+  total_loss: number;
+  notes?: string;
+  created_at: string;
+  user: {
+    id: number;
+    username: string;
+    role: string;
+  };
+}
+
+export interface ICreatePartner {
+  full_name: string;
+  phone: string;
+  balance: number;
+  notes?: string;
+  username: string;
+  password: string;
+}
+
+export interface IInvestment {
+  id: number;
+  amount: number;
+  notes?: string;
+  created_at: string;
+  partner: IPartner;
+}

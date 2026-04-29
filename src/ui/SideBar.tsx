@@ -8,6 +8,7 @@ import {
   LeftOutlined,
   TableOutlined,
   PlusOutlined,
+  TeamOutlined,
 } from "@ant-design/icons";
 import { Link, useLocation } from "react-router-dom";
 import { useSidebar } from "../store/Sidebar";
@@ -51,6 +52,13 @@ export const SideBar: FC = (): JSX.Element => {
       icon: <TableOutlined />,
       active: location.pathname.includes("reports"),
       label: "Hisobotlar",
+    },
+    {
+      to: "partners",
+      title: "Sheriklar",
+      icon: <TeamOutlined />,
+      active: location.pathname.includes("partners"),
+      label: "Sheriklar",
     },
   ];
 
@@ -158,6 +166,13 @@ export const SideBar: FC = (): JSX.Element => {
         >
           <TableOutlined className="text-[20px]" />
           <span className="text-[10px] font-bold">Hisobot</span>
+        </Link>
+        <Link
+          to="/partners"
+          className={`flex flex-col items-center justify-center w-14 h-12 gap-1 rounded-xl transition-colors ${location.pathname.includes("partners") ? "text-(--secondary)" : "text-gray-400 hover:text-gray-600"}`}
+        >
+          <TeamOutlined className="text-[20px]" />
+          <span className="text-[10px] font-bold">Sheriklar</span>
         </Link>
       </div>
     </>
