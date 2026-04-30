@@ -17,7 +17,7 @@ export const PartnersHeader: FC<Props> = ({ onAdd }): JSX.Element => (
     </div>
     <button
       onClick={onAdd}
-      className="bg-(--secondary) hover:bg-blue-600 text-white font-medium py-2.5 px-5 rounded-xl shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2"
+      className="bg-(--secondary) hover:bg-blue-600 text-white font-medium py-2.5 px-5 rounded-xl shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer"
     >
       <PlusOutlined /> Sherik qo'shish
     </button>

@@ -1,11 +1,12 @@
 import { type FC, useState } from "react";
-import { Table, Popconfirm } from "antd";
+import { Table, Popconfirm, message } from "antd";
 import { EditOutlined, EyeOutlined, DeleteOutlined } from "@ant-design/icons";
 import { usePartners, useDeletePartner } from "../hooks/usePartners";
 import type { IPartner } from "../interfaces";
 import type { ColumnType } from "antd/es/table";
 import { AddPartnerModal } from "./AddPartnerModal";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 const formatMoney = (amount: number) =>
   new Intl.NumberFormat("uz-UZ").format(amount) + " UZS";
@@ -126,7 +127,7 @@ export const PartnersTable: FC = () => {
       width: 160,
       render: (text: string) => (
         <span className="text-gray-400 text-sm">
-          {new Date(text).toLocaleDateString("uz-UZ")}
+          {dayjs(text).format("DD.MM.YYYY")}
         </span>
       ),
     },
@@ -139,13 +140,14 @@ export const PartnersTable: FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setEditData(record)} // ← modal ochadi
-            className="p-1.5 rounded-lg hover:bg-blue-50 text-gray-400 hover:text-blue-500 transition-colors"
+            className="p-1.5 rounded-lg hover:bg-blue-50 text-gray-400 hover:text-blue-500 transition-colors cursor-pointer"
           >
             <EditOutlined />
           </button>
+
           <button
             onClick={() => navigate(`/partners/${record.id}`)}
-            className="p-1.5 rounded-lg hover:bg-blue-50 text-gray-400 hover:text-blue-500 transition-colors"
+            className="p-1.5 rounded-lg hover:bg-blue-50 text-gray-400 hover:text-blue-500 transition-colors cursor-pointer"
           >
             <EyeOutlined />
           </button>
@@ -155,9 +157,15 @@ export const PartnersTable: FC = () => {
             okText="Ha"
             cancelText="Yo'q"
             okButtonProps={{ danger: true }}
-            onConfirm={() => deletePartner(record.id)}
+            onConfirm={() => {
+              deletePartner(record.id, {
+                onError: (error: Error) => {
+                  message.error(error.message);
+                },
+              });
+            }}
           >
-            <button className="p-1.5 rounded-lg hover:bg-rose-50 text-gray-400 hover:text-rose-500 transition-colors">
+            <button className="p-1.5 rounded-lg hover:bg-rose-50 text-gray-400 hover:text-rose-500 transition-colors cursor-pointer">
               <DeleteOutlined />
             </button>
           </Popconfirm>

@@ -138,3 +138,18 @@ export interface IInvestment {
   created_at: string;
   partner: IPartner;
 }
+
+export interface ExcelCustomerRow {
+  "To'liq ism"?: string;
+  Telefon: string;
+  "Qo'shimcha telefon"?: string;
+  Manzil?: string;
+  "Pasport seriya"?: string;
+  "Pasport raqam"?: string;
+  "Kim bergan"?: string;
+  "Berilgan sana"?: string;
+  "Kim orqali kelgan"?: string;
+  "Ish joyi"?: string;
+  "Kafil ismi"?: string;
+  "Kafil telefon"?: string;
+}

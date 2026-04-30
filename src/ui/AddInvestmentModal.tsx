@@ -48,15 +48,16 @@ export const AddInvestmentModal: FC<Props> = ({
           name="amount"
           rules={[{ required: true, message: "Summani kiriting!" }]}
         >
-          <InputNumber
+          <InputNumber<number>
             placeholder="5 000 000"
             size="large"
+            style={{ width: "100%" }}
             className="w-full"
             min={0}
             formatter={(value) =>
               `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, " ")
             }
-            parser={(value) => (value ? Number(value.replace(/\s/g, "")) : 0)}
+            parser={(value) => value?.replace(/\s/g, "") as unknown as number}
           />
         </Form.Item>
 

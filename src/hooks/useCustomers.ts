@@ -62,3 +62,13 @@ export const useUpsertCustomer = () => {
     },
   });
 };
+
+export const useImportBulk = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: customersService.importBulk,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
+    },
+  });
+};

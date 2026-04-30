@@ -34,4 +34,10 @@ export const customersService = {
       method: "POST",
       body: JSON.stringify(data),
     }),
+
+  importBulk: (customers: ICreateCustomer[]) =>
+    api("/customers/import-bulk", {
+      method: "POST",
+      body: JSON.stringify({ customers }),
+    }),
 };

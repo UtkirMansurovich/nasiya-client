@@ -49,7 +49,7 @@ export const AddPartnerModal: FC<Props> = ({ isOpen, onClose, editData }) => {
     } else {
       // Yangi yaratishda username va password kiritish kerak bo'ladi
       // Shuning uchun Create mode-da formani biroz boshqacha qilamiz (pastga qarang)
-      createPartner(values, {
+      createPartner(payload, {
         onSuccess: () => {
           form.resetFields();
           onClose();
@@ -105,6 +105,7 @@ export const AddPartnerModal: FC<Props> = ({ isOpen, onClose, editData }) => {
             <InputNumber
               placeholder="10 000 000"
               size="large"
+              style={{ width: "100%" }}
               className="w-full"
               formatter={(value) =>
                 `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, " ")

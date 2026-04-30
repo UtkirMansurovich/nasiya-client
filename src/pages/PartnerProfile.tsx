@@ -1,16 +1,22 @@
 import { type FC, type JSX, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button, Spin } from "antd";
-import { ArrowLeftOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  ArrowLeftOutlined,
+  PlusOutlined,
+  LockOutlined,
+} from "@ant-design/icons";
 import { usePartner } from "../hooks/usePartners";
 import { PartnerInfoCards } from "../ui/PartnerInfoCards";
 import { InvestmentsHistory } from "../ui/InvestmentsHistory";
 import { AddInvestmentModal } from "../ui/AddInvestmentModal";
+import { ResetPasswordModal } from "../ui/ResetPasswordModal";
 
 export const PartnerProfile: FC = (): JSX.Element => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isInvestmentOpen, setIsInvestmentOpen] = useState(false);
+  const [isResetPasswordOpen, setIsResetPasswordOpen] = useState(false);
 
   const { data: partner, isLoading } = usePartner(Number(id));
 
@@ -52,14 +58,24 @@ export const PartnerProfile: FC = (): JSX.Element => {
           </div>
         </div>
 
-        <Button
-          type="primary"
-          size="large"
-          icon={<PlusOutlined />}
-          onClick={() => setIsModalOpen(true)}
-        >
-          Mablag' qo'shish
-        </Button>
+        {/* Tugmalar */}
+        <div className="flex items-center gap-3">
+          <Button
+            size="large"
+            icon={<LockOutlined />}
+            onClick={() => setIsResetPasswordOpen(true)}
+          >
+            Login/Parol
+          </Button>
+          <Button
+            type="primary"
+            size="large"
+            icon={<PlusOutlined />}
+            onClick={() => setIsInvestmentOpen(true)}
+          >
+            Mablag' qo'shish
+          </Button>
+        </div>
       </div>
 
       {/* KPI Cards */}
@@ -68,11 +84,18 @@ export const PartnerProfile: FC = (): JSX.Element => {
       {/* Investitsiyalar tarixi */}
       <InvestmentsHistory partnerId={Number(id)} />
 
-      {/* Add Investment Modal */}
+      {/* Modals */}
       <AddInvestmentModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isInvestmentOpen}
+        onClose={() => setIsInvestmentOpen(false)}
         partnerId={Number(id)}
+      />
+
+      <ResetPasswordModal
+        isOpen={isResetPasswordOpen}
+        onClose={() => setIsResetPasswordOpen(false)}
+        partnerId={Number(id)}
+        initialUsername={partner.user?.username}
       />
     </div>
   );
