@@ -15,6 +15,7 @@ export const useCustomer = (id: number) => {
   return useQuery({
     queryKey: ["customer", id],
     queryFn: () => customersService.getOne(id),
+    enabled: !!id,
   });
 };
 

@@ -1,17 +1,14 @@
-import { type FC } from "react";
+import { useState, type FC } from "react";
 import { Table, Tag, Tooltip } from "antd";
-import {
-  EyeOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
+import { EyeOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Popconfirm } from "antd";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useCustomers, useDeleteCustomer } from "../hooks/useCustomers";
 import type { ICustomer } from "../interfaces";
+import { AddCustomerModal } from "./AddCustomer";
 
 // --- Helpers ---
-const fmt = (n: number) =>
-  new Intl.NumberFormat("uz-UZ").format(Math.round(n));
+const fmt = (n: number) => new Intl.NumberFormat("uz-UZ").format(Math.round(n));
 
 const StatusTag: FC<{ status: string }> = ({ status }) => {
   const map: Record<string, { color: string; text: string }> = {
@@ -28,6 +25,7 @@ const StatusTag: FC<{ status: string }> = ({ status }) => {
 export const CustomersTable: FC = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [editData, setEditData] = useState<ICustomer | null>(null);
 
   const currentPage = Number(searchParams.get("page")) || 1;
   const pageSize = Number(searchParams.get("limit")) || 10;
@@ -40,11 +38,7 @@ export const CustomersTable: FC = () => {
 
   const columns = [
     {
-      title: (
-        <div className="h-10 flex items-center pl-2">
-          F.I.O
-        </div>
-      ),
+      title: <div className="h-10 flex items-center pl-2">F.I.O</div>,
       dataIndex: "full_name",
       fixed: "left" as const,
       width: 200,
@@ -145,7 +139,9 @@ export const CustomersTable: FC = () => {
       render: (_: unknown, record: ICustomer) => {
         const val = record.stats?.qolgan_qarz;
         return (
-          <span className={`font-semibold text-sm ${val && val > 0 ? "text-rose-500" : "text-gray-400"}`}>
+          <span
+            className={`font-semibold text-sm ${val && val > 0 ? "text-rose-500" : "text-gray-400"}`}
+          >
             {val ? `${fmt(val)} so'm` : "—"}
           </span>
         );
@@ -158,9 +154,7 @@ export const CustomersTable: FC = () => {
         const date = record.stats?.oxirgi_sana;
         return (
           <span className="text-gray-400 text-sm">
-            {date
-              ? new Date(date).toLocaleDateString("uz-UZ")
-              : "—"}
+            {date ? new Date(date).toLocaleDateString("uz-UZ") : "—"}
           </span>
         );
       },
@@ -178,6 +172,12 @@ export const CustomersTable: FC = () => {
       width: 100,
       render: (_: unknown, record: ICustomer) => (
         <div className="flex items-center gap-1">
+          <button
+            onClick={() => setEditData(record)} // ← edit modal ochadi
+            className="p-1.5 rounded-lg hover:bg-blue-50 text-gray-400 hover:text-blue-500 transition-colors cursor-pointer"
+          >
+            <EditOutlined />
+          </button>
           <Tooltip title="Batafsil">
             <button
               onClick={() => navigate(`/customers/${record.id}`)}
@@ -206,32 +206,40 @@ export const CustomersTable: FC = () => {
   ];
 
   return (
-    <Table
-      dataSource={customers}
-      columns={columns}
-      rowKey="id"
-      loading={isLoading}
-      pagination={{
-        current: currentPage,
-        pageSize: pageSize,
-        total: total,
-        showSizeChanger: true,
-        pageSizeOptions: ["10", "20", "50", "100"],
-        onChange: (page, size) => {
-          setSearchParams({ page: page.toString(), limit: size.toString() });
-        },
-        showTotal: (total) => `Jami: ${total} ta mijoz`,
-        style: {
-          paddingRight: 20,
-        },
-      }}
-      rowClassName="hover:bg-blue-50/30 cursor-pointer"
-      onRow={(record) => ({
-        onDoubleClick: () => navigate(`/customers/${record.id}`),
-      })}
-      sticky
-      scroll={{ x: 1400 }}
-      size="small"
-    />
+    <>
+      <Table
+        dataSource={customers}
+        columns={columns}
+        rowKey="id"
+        loading={isLoading}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: total,
+          showSizeChanger: true,
+          pageSizeOptions: ["10", "20", "50", "100"],
+          onChange: (page, size) => {
+            setSearchParams({ page: page.toString(), limit: size.toString() });
+          },
+          showTotal: (total) => `Jami: ${total} ta mijoz`,
+          style: {
+            paddingRight: 20,
+          },
+        }}
+        rowClassName="hover:bg-blue-50/30 cursor-pointer"
+        onRow={(record) => ({
+          onDoubleClick: () => navigate(`/customers/${record.id}`),
+        })}
+        sticky
+        scroll={{ x: 1400 }}
+        size="small"
+      />
+      {/* Edit Modal */}
+      <AddCustomerModal
+        isOpen={!!editData}
+        onClose={() => setEditData(null)}
+        editData={editData} // ← pass qilamiz
+      />
+    </>
   );
 };

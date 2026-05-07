@@ -1,31 +1,55 @@
-import { type FC, useState } from "react";
+import { useEffect, type FC } from "react";
 import { Modal, Form, Input, Button, Row, Col } from "antd";
-import { useCreateCustomer } from "../hooks/useCustomers";
-import type { ICreateCustomer } from "../interfaces";
+import { useCreateCustomer, useUpdateCustomer } from "../hooks/useCustomers";
+import type { ICreateCustomer, ICustomer } from "../interfaces";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  editData?: ICustomer | null;
 }
 
-export const AddCustomerModal: FC<Props> = ({ isOpen, onClose }) => {
+export const AddCustomerModal: FC<Props> = ({ isOpen, onClose, editData }) => {
   const [form] = Form.useForm();
-  const { mutate: createCustomer, isPending } = useCreateCustomer();
+  const { mutate: createCustomer, isPending: isCreating } = useCreateCustomer();
+  const { mutate: updateCustomer, isPending: isUpdating } = useUpdateCustomer();
 
-  console.log(isOpen);
+  const isPending = isCreating || isUpdating;
+
+  useEffect(() => {
+    if (editData) {
+      form.setFieldsValue(editData);
+    } else {
+      form.resetFields();
+    }
+  }, [editData, form]);
 
   const handleSubmit = (values: ICreateCustomer) => {
-    createCustomer(values, {
-      onSuccess: () => {
-        form.resetFields();
-        onClose();
-      },
-    });
+    if (editData) {
+      // Edit mode
+      updateCustomer(
+        { id: editData.id, data: values },
+        {
+          onSuccess: () => {
+            form.resetFields();
+            onClose();
+          },
+        },
+      );
+    } else {
+      // Create mode
+      createCustomer(values, {
+        onSuccess: () => {
+          form.resetFields();
+          onClose();
+        },
+      });
+    }
   };
 
   return (
     <Modal
-      title="Yangi mijoz qo'shish"
+      title={editData ? "Mijozni tahrirlash" : "Yangi mijoz qo'shish"}
       open={isOpen}
       onCancel={onClose}
       footer={null}
@@ -141,7 +165,7 @@ export const AddCustomerModal: FC<Props> = ({ isOpen, onClose }) => {
             htmlType="submit"
             loading={isPending}
           >
-            Saqlash
+            {editData ? "Saqlash" : "Qo'shish"}
           </Button>
         </div>
       </Form>
