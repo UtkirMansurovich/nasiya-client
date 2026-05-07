@@ -1,5 +1,5 @@
 import { type FC, useEffect } from "react";
-import { Modal, Form, Input, InputNumber, Button } from "antd";
+import { Modal, Form, Input, InputNumber, Button, message } from "antd";
 import { useCreatePartner, useUpdatePartner } from "../hooks/usePartners";
 import type { ICreatePartner, IPartner } from "../interfaces";
 
@@ -37,6 +37,8 @@ export const AddPartnerModal: FC<Props> = ({ isOpen, onClose, editData }) => {
       balance: Number(values.balance) || 0,
     };
 
+    console.log("payload:", payload);
+
     if (editData) {
       updatePartner(
         { id: editData.id, data: payload },
@@ -53,6 +55,10 @@ export const AddPartnerModal: FC<Props> = ({ isOpen, onClose, editData }) => {
         onSuccess: () => {
           form.resetFields();
           onClose();
+        },
+        onError: (error: Error) => {
+          console.log("error:", error.message);
+          message.error(error?.message || "Xatolik yuz berdi");
         },
       });
     }

@@ -96,3 +96,35 @@ export const useDeletePartner = () => {
     },
   });
 };
+
+// Arxivlangan sheriklar
+export const useArchivedPartners = () => {
+  return useQuery({
+    queryKey: ["partners-archived"],
+    queryFn: partnersService.getArchived,
+  });
+};
+
+// Sherikni arxivlash
+export const useArchivePartner = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => partnersService.archive(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["partners"] });
+      queryClient.invalidateQueries({ queryKey: ["archived-partners"] }); // ← qo'shing
+    },
+  });
+};
+
+// Sherikni tiklash
+export const useRestorePartner = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => partnersService.restore(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["partners"] });
+      queryClient.invalidateQueries({ queryKey: ["archived-partners"] }); // ← qo'shing
+    },
+  });
+};

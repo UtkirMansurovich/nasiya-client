@@ -153,3 +153,33 @@ export interface ExcelCustomerRow {
   "Kafil ismi"?: string;
   "Kafil telefon"?: string;
 }
+
+export interface ICredit {
+  id: number;
+  product_name: string;
+  cost_price: number;
+  markup_percent: number;
+  total_debt: number;
+  paid_amount: number;
+  remaining_debt: number;
+  daily_payment: number;
+  duration_days: number;
+  working_days: number;
+  status: "active" | "completed" | "defaulted";
+  notes?: string;
+  start_date: string;
+  customer: ICustomer;
+  partner?: IPartner;
+  payments?: IPayment[];
+}
+
+export interface ICreateCredit {
+  customerId: number;
+  partnerId?: number;
+  product_name: string;
+  cost_price: number;
+  markup_percent: number;
+  duration_days: number;
+  start_date: string;
+  notes?: string;
+}

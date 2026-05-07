@@ -1,7 +1,8 @@
 import { type FC, useState } from "react";
 import { Table, Popconfirm, message } from "antd";
-import { EditOutlined, EyeOutlined, DeleteOutlined } from "@ant-design/icons";
-import { usePartners, useDeletePartner } from "../hooks/usePartners";
+import { EditOutlined, EyeOutlined, InboxOutlined } from "@ant-design/icons";
+import { usePartners, useArchivePartner } from "../hooks/usePartners";
+import {} from "../hooks/usePartners";
 import type { IPartner } from "../interfaces";
 import type { ColumnType } from "antd/es/table";
 import { AddPartnerModal } from "./AddPartnerModal";
@@ -31,7 +32,7 @@ export const PartnersTable: FC = () => {
   const [editData, setEditData] = useState<IPartner | null>(null);
 
   const { data: partners, isLoading } = usePartners();
-  const { mutate: deletePartner } = useDeletePartner();
+  const { mutate: archivePartner } = useArchivePartner();
 
   const columns: EditableColumn[] = [
     {
@@ -152,21 +153,19 @@ export const PartnersTable: FC = () => {
             <EyeOutlined />
           </button>
           <Popconfirm
-            title="Sherikni o'chirish"
-            description="Rostdan ham o'chirmoqchimisiz?"
+            title="Sherikni arxivlash"
+            description="Sherik chiqib ketmoqdami? Arxivlanadi."
             okText="Ha"
             cancelText="Yo'q"
-            okButtonProps={{ danger: true }}
-            onConfirm={() => {
-              deletePartner(record.id, {
-                onError: (error: Error) => {
-                  message.error(error.message);
-                },
-              });
-            }}
+            onConfirm={() =>
+              archivePartner(record.id, {
+                onSuccess: () => message.success("Sherik arxivlandi!"),
+                onError: (error: Error) => message.error(error.message),
+              })
+            }
           >
             <button className="p-1.5 rounded-lg hover:bg-rose-50 text-gray-400 hover:text-rose-500 transition-colors cursor-pointer">
-              <DeleteOutlined />
+              <InboxOutlined />
             </button>
           </Popconfirm>
         </div>

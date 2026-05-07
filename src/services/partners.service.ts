@@ -29,4 +29,16 @@ export const partnersService = {
     api(`/partners/${id}`, {
       method: "DELETE",
     }),
+
+  archive: (id: number) =>
+    api(`/partners/${id}/archive`, {
+      method: "PATCH",
+    }),
+
+  restore: (id: number) =>
+    api(`/partners/${id}/restore`, {
+      method: "PATCH",
+    }),
+
+  getArchived: () => api("/partners/archived"),
 };

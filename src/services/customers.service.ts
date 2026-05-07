@@ -2,6 +2,9 @@ import type { ICreateCustomer, IUpdateCustomer } from "../interfaces";
 import { api } from "./api";
 
 export const customersService = {
+  // Barchasi (pagination siz) — select uchun
+  getAllWithoutPagination: () => api("/customers/all"),
+
   // Barcha mijozlar
   getAll: (page: number = 1, limit: number = 10) =>
     api(`/customers?page=${page}&limit=${limit}`),
