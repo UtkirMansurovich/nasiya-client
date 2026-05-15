@@ -1,6 +1,7 @@
 import { type FC, type JSX, useState } from "react";
 import { useCredits } from "../hooks/useCredits";
 import { AddCreditModal } from "../ui/AddCreditModal";
+import { CreditExcelImportModal } from "../ui/CreditExcelImportModal";
 import { CreditsTable } from "../ui/CreditsTable";
 import {
   CreditCardOutlined,
@@ -16,6 +17,7 @@ const formatMoney = (amount: number) =>
 
 export const Loans: FC = (): JSX.Element => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isExcelModalOpen, setIsExcelModalOpen] = useState(false);
   const { data: credits = [] } = useCredits();
 
   // KPI hisoblash
@@ -80,7 +82,7 @@ export const Loans: FC = (): JSX.Element => {
         </div>
         <div className="flex items-center gap-3">
           <button
-            onClick={() => {}}
+            onClick={() => setIsExcelModalOpen(true)}
             className="bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2.5 px-5 rounded-xl shadow-md shadow-emerald-500/20 transition-all hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2"
           >
             <FileExcelOutlined /> Excel import
@@ -121,6 +123,11 @@ export const Loans: FC = (): JSX.Element => {
       <AddCreditModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+
+      <CreditExcelImportModal
+        isOpen={isExcelModalOpen}
+        onClose={() => setIsExcelModalOpen(false)}
       />
     </div>
   );

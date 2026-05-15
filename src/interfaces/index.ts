@@ -183,3 +183,37 @@ export interface ICreateCredit {
   start_date: string;
   notes?: string;
 }
+
+export interface IPayment {
+  id: number;
+  amount: number;
+  method: "cash" | "card" | "transfer";
+  notes?: string;
+  payment_date: string;
+  credit: ICredit;
+}
+
+export interface ICreatePayment {
+  creditId: number;
+  amount: number;
+  method?: "cash" | "card" | "transfer";
+  notes?: string;
+}
+
+// interfaces/index.ts ga qo'shing:
+export interface IOwner {
+  id: number;
+  balance: number;
+  total_invested: number;
+  total_profit: number;
+  total_loss: number;
+  updated_at: string;
+}
+
+export interface ICreatePayment {
+  creditId: number;
+  amount: number;
+  method?: "cash" | "card" | "transfer";
+  notes?: string;
+  payment_date?: string;
+}

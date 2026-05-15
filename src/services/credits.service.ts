@@ -32,4 +32,10 @@ export const creditsService = {
     api(`/credits/${id}`, {
       method: "DELETE",
     }),
+
+  importBulk: (credits: unknown[]) =>
+    api("/credits/import-bulk", {
+      method: "POST",
+      body: JSON.stringify({ credits }),
+    }),
 };

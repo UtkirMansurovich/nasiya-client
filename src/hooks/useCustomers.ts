@@ -13,7 +13,7 @@ export const useCustomers = (page: number = 1, limit: number = 10) => {
 // Bitta mijoz
 export const useCustomer = (id: number) => {
   return useQuery({
-    queryKey: ["customer", id],
+    queryKey: ["customers", "detail", id],
     queryFn: () => customersService.getOne(id),
     enabled: !!id,
   });

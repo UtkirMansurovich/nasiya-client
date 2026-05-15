@@ -18,6 +18,7 @@ import type { ICreateCredit } from "../interfaces";
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  defaultCustomerId?: number;
 }
 
 interface CreditFormValues {
@@ -31,7 +32,7 @@ interface CreditFormValues {
   notes?: string;
 }
 
-export const AddCreditModal: FC<Props> = ({ isOpen, onClose }) => {
+export const AddCreditModal: FC<Props> = ({ isOpen, onClose, defaultCustomerId }) => {
   const [form] = Form.useForm();
   const [totalDebt, setTotalDebt] = useState(0);
   const [dailyPayment, setDailyPayment] = useState(0);
@@ -75,15 +76,13 @@ export const AddCreditModal: FC<Props> = ({ isOpen, onClose }) => {
   };
 
   useEffect(() => {
-    if (!isOpen) {
-      // setState lar useEffect dan tashqarida, onCancel da qilamiz
-      return;
-    }
+    if (!isOpen) return;
     form.setFieldsValue({
       markup_percent: 30,
       start_date: dayjs(),
+      ...(defaultCustomerId ? { customerId: defaultCustomerId } : {}),
     });
-  }, [isOpen, form]); // ← form qo'shildi
+  }, [isOpen, form, defaultCustomerId]);
 
   const formatMoney = (amount: number) =>
     new Intl.NumberFormat("uz-UZ").format(Math.round(amount)) + " UZS";

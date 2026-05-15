@@ -1,15 +1,26 @@
 import { type FC, type JSX } from "react";
-import { dataDashboardPayments } from "../fakers/data-dashboard-payments";
-import type { IDashboardPayments } from "../interfaces";
+import { useTodayPayments } from "../hooks/useReports";
+import { Skeleton } from "antd";
+import type { IPayment } from "../interfaces";
+
+const fmt = (n: number) => new Intl.NumberFormat("fr-CA").format(Math.round(n));
+
+const avatarColors = [
+  "bg-blue-100 text-blue-700",
+  "bg-emerald-100 text-emerald-700",
+  "bg-purple-100 text-purple-700",
+  "bg-orange-100 text-orange-700",
+  "bg-pink-100 text-pink-700",
+];
+
+const methodLabel: Record<string, string> = {
+  cash: "Naqd",
+  card: "Karta",
+  transfer: "O'tkazma",
+};
 
 export const DashboardPayments: FC = (): JSX.Element => {
-  const avatarColors = [
-    "bg-blue-100 text-blue-700",
-    "bg-emerald-100 text-emerald-700",
-    "bg-purple-100 text-purple-700",
-    "bg-orange-100 text-orange-700",
-    "bg-pink-100 text-pink-700",
-  ];
+  const { data: payments = [], isLoading } = useTodayPayments();
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3.5 sm:p-5 flex flex-col h-full">
@@ -35,57 +46,67 @@ export const DashboardPayments: FC = (): JSX.Element => {
             Bugungi to'lovlar
           </h4>
         </div>
-        <button className="text-xs sm:text-sm font-semibold text-(--secondary) hover:text-blue-700 transition-colors">
-          Barchasi
-        </button>
+        <span className="text-xs bg-blue-50 text-blue-600 font-semibold px-2 py-0.5 rounded-full">
+          {payments.length} ta
+        </span>
       </div>
-      <div className="flex flex-col gap-2">
-        {dataDashboardPayments?.map(
-          (item: IDashboardPayments, index: number) => (
-            <div
-              key={item?.id}
-              className="p-2 sm:p-3 flex items-center justify-between hover:bg-gray-50 transition-all duration-200 rounded-xl border border-transparent hover:border-gray-200 group gap-2"
-            >
-              <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
-                <div
-                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full ${avatarColors[index % avatarColors.length]} font-bold flex items-center justify-center shrink-0 text-sm sm:text-lg shadow-sm group-hover:scale-105 transition-transform`}
-                >
-                  {item?.fullName?.split(" ")[0]?.charAt(0)}
-                  {item?.fullName?.split(" ")[1]?.charAt(0)}
-                </div>
-                <div className="flex flex-col flex-1 min-w-0">
-                  <p className="font-bold text-gray-800 text-[13px] sm:text-[15px] truncate">
-                    {item?.fullName}
-                  </p>
-                  <div className="flex flex-wrap items-center gap-1 sm:gap-2 text-[10px] sm:text-[13px] text-gray-500 mt-1">
-                    <p className="bg-gray-100/80 px-1.5 sm:px-2 py-0.5 rounded-md text-gray-600 border border-gray-200/60 shadow-xs truncate max-w-17.5 sm:max-w-none">
-                      {item?.product}
+
+      {isLoading ? (
+        <Skeleton active paragraph={{ rows: 3 }} />
+      ) : payments.length === 0 ? (
+        <div className="flex-1 flex items-center justify-center text-gray-400 text-sm">
+          Bugun hali to'lov yo'q
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2">
+          {payments.map((item: IPayment, index: number) => {
+            const fullName = item.credit?.customer?.full_name ?? "—";
+            const product = item.credit?.product_name ?? "—";
+            const time = new Date(item.payment_date).toLocaleTimeString(
+              "uz-UZ",
+              { hour: "2-digit", minute: "2-digit" }
+            );
+
+            return (
+              <div
+                key={item.id}
+                className="p-2 sm:p-3 flex items-center justify-between hover:bg-gray-50 transition-all duration-200 rounded-xl border border-transparent hover:border-gray-200 group gap-2"
+              >
+                <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
+                  <div
+                    className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full ${avatarColors[index % avatarColors.length]} font-bold flex items-center justify-center shrink-0 text-sm sm:text-lg shadow-sm group-hover:scale-105 transition-transform`}
+                  >
+                    {fullName.split(" ")[0]?.charAt(0)}
+                    {fullName.split(" ")[1]?.charAt(0)}
+                  </div>
+                  <div className="flex flex-col flex-1 min-w-0">
+                    <p className="font-bold text-gray-800 text-[13px] sm:text-[15px] truncate">
+                      {fullName}
                     </p>
-                    <span className="hidden sm:inline text-gray-300">—</span>
-                    <p
-                      className={
-                        item?.status === "Faol"
-                          ? "text-emerald-600 font-medium bg-emerald-50 px-1.5 sm:px-2 py-0.5 rounded-md"
-                          : "text-rose-600 font-medium bg-rose-50 px-1.5 sm:px-2 py-0.5 rounded-md"
-                      }
-                    >
-                      {item?.status}
-                    </p>
+                    <div className="flex flex-wrap items-center gap-1 sm:gap-2 text-[10px] sm:text-[13px] text-gray-500 mt-1">
+                      <p className="bg-gray-100/80 px-1.5 sm:px-2 py-0.5 rounded-md text-gray-600 border border-gray-200/60 shadow-xs truncate max-w-17.5 sm:max-w-none">
+                        {product}
+                      </p>
+                      <span className="hidden sm:inline text-gray-300">—</span>
+                      <p className="text-emerald-600 font-medium bg-emerald-50 px-1.5 sm:px-2 py-0.5 rounded-md">
+                        {methodLabel[item.method] ?? item.method}
+                      </p>
+                    </div>
                   </div>
                 </div>
+                <div className="text-right flex flex-col items-end shrink-0 pl-1">
+                  <p className="font-bold text-gray-800 text-[13px] sm:text-[16px] whitespace-nowrap">
+                    +{fmt(item.amount)} UZS
+                  </p>
+                  <p className="text-[9px] sm:text-[12px] text-gray-400 mt-1 font-medium bg-gray-50 px-1.5 sm:px-2.5 py-0.5 rounded-full border border-gray-100 whitespace-nowrap">
+                    {time}
+                  </p>
+                </div>
               </div>
-              <div className="text-right flex flex-col items-end shrink-0 pl-1">
-                <p className="font-bold text-gray-800 text-[13px] sm:text-[16px] whitespace-nowrap">
-                  +{new Intl.NumberFormat("fr-CA").format(item?.value)} UZS
-                </p>
-                <p className="text-[9px] sm:text-[12px] text-gray-400 mt-1 font-medium bg-gray-50 px-1.5 sm:px-2.5 py-0.5 rounded-full border border-gray-100 whitespace-nowrap">
-                  {item?.time}
-                </p>
-              </div>
-            </div>
-          ),
-        )}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

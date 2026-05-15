@@ -13,7 +13,7 @@ export const useCredits = () => {
 // Bitta nasiya
 export const useCredit = (id: number) => {
   return useQuery({
-    queryKey: ["credit", id],
+    queryKey: ["credits", "detail", id],
     queryFn: () => creditsService.getOne(id),
     enabled: !!id,
   });
@@ -76,6 +76,18 @@ export const useDeleteCredit = () => {
     mutationFn: (id: number) => creditsService.remove(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["credits"] });
+    },
+  });
+};
+
+// Excel dan ko'plab nasiyalarni qo'shish
+export const useImportBulkCredits = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (credits: any[]) => creditsService.importBulk(credits),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["credits"] });
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
     },
   });
 };
